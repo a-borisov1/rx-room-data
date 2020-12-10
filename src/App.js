@@ -1,25 +1,42 @@
-import logo from './logo.svg';
+import React from 'react';
+
+import { updateInfo } from './rx/valuesGen';
+import { generateData } from './rx/timeGen';
+import { Dashboard } from './components/dashboard';
+
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const temperature$ = generateData({
+  minDelay: 40,
+  maxDelay: 250,
+  minValue: 15,
+  maxValue: 26,
+});
 
-export default App;
+const humidity$ = generateData({
+  minDelay: 300,
+  maxDelay: 2500,
+  minValue: 75,
+  maxValue: 105,
+});
+
+const pressure$ = generateData({
+  minDelay: 130,
+  maxDelay: 250,
+  minValue: 60,
+  maxValue: 100,
+});
+
+const dashboard$ = updateInfo(temperature$, humidity$, pressure$).map(
+  ([temperature, humidity, pressure]) => ({
+    temperature,
+    humidity,
+    pressure,
+  })
+);
+
+export const App = () => (
+  <div className="App">
+    <Dashboard dashboard$={dashboard$} />
+  </div>
+);
