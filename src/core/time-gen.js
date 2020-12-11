@@ -1,15 +1,12 @@
 import { of, timer } from 'rxjs';
-
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/mapTo';
 import 'rxjs/add/operator/repeat';
 
-const random = (min, max) => {
-  return min + Math.ceil(Math.random() * (max - min));
-};
+import { random } from '../utils/utils';
 
-export const generateData = (props) => {
-  const { minDelay, maxDelay, minValue, maxValue } = props;
+export const generateData = (options) => {
+  const { minDelay, maxDelay, minValue, maxValue } = options;
 
   return of('')
     .switchMap(() =>

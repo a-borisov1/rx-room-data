@@ -1,14 +1,19 @@
-import { Subject } from 'rxjs';
-
-import { updateInfo } from './valuesGen';
+import { Subject, of } from 'rxjs';
+import lolex from 'lolex';
+import { updateInfo } from './values-gen';
 
 describe('Dashboard', function () {
-  let sut;
-  let streamA;
-  let streamB;
-  let subscriber;
+  let sut, streamA, streamB, subscriber, clock;
+
+  const sensorConfig = {
+    minDelay: 100,
+    maxDelay: 200,
+    minValue: 20,
+    maxValue: 50,
+  };
 
   beforeEach(() => {
+    clock = lolex.install();
     jest.useFakeTimers();
     streamA = new Subject();
     streamB = new Subject();
@@ -26,16 +31,16 @@ describe('Dashboard', function () {
     expect(subscriber).toHaveBeenCalledWith([aValue, bValue]);
   });
 
-  // it('should set source value to "NA" if not emited within 1000 ms', function () {
-  //     const clock = lolex.install();
-  //     const bValue = 'a';
-  //     streamA.next('some value');
-  //     clock.tick(1111);
-  //     streamB.next(bValue);
+  it('should set source value to "NA" if not emited within 1000 ms', function () {
+    const clock = lolex.install();
+    const bValue = 'a';
+    streamA.next('some value');
+    clock.tick(1111);
+    streamB.next(bValue);
 
-  //     expect(subscriber).toHaveBeenCalledWith(['NA', bValue]);
-  //     clock.uninstall()
-  // });
+    expect(subscriber).toHaveBeenCalledWith(['N/A', bValue]);
+    clock.uninstall();
+  });
 
   it('should NOT emit values more often that once per 100ms', function () {
     streamA.next('someValue');
@@ -57,7 +62,7 @@ describe('Dashboard', function () {
     expect(subscriber).not.toHaveBeenCalled();
   });
 
-  it('should NOT emit when value switches to NA', function () {
+  it('should NOT emit when value switches to N/A', function () {
     streamA.next();
     jest.advanceTimersByTime(500);
     streamB.next();

@@ -1,4 +1,4 @@
-import { combineLatest, merge, of } from 'rxjs';
+import { combineLatest, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 import 'rxjs/add/operator/throttleTime';

@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^12.1.10",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
+    "lolex": "^6.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
@@ -38,5 +39,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/a-borisov1/rx-room-data.git",
+  "author": "Artyom.Borisov <a.borisov.exceedteam@gmail.com>",
+  "license": "MIT"
 }
